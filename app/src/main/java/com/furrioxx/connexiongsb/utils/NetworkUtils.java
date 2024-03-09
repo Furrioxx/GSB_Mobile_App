@@ -22,7 +22,7 @@ public class NetworkUtils {
 
         try{
             Uri builtURI = Uri.parse(BASE_URL).buildUpon()
-                    .appendPath("login.php")
+                    .appendPath("login")
                     .build();
             URL requestURL = new URL(builtURI.toString());
 
@@ -80,7 +80,7 @@ public class NetworkUtils {
 
         try{
             Uri builtURI = Uri.parse(BASE_URL).buildUpon()
-                    .appendPath("getCostSheet.php")
+                    .appendPath("getCostSheet")
                     .build();
             URL requestURL = new URL(builtURI.toString());
 

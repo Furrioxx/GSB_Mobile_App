@@ -1,12 +1,15 @@
 package com.furrioxx.connexiongsb.async;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.utils.NetworkUtils;
 
 import org.json.JSONArray;
@@ -50,9 +53,12 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
                     refund_total = costSheet.getString("refund_total") + " €";
                     idUserValidation = costSheet.getString("idUserValidation");
                     statue  = costSheet.getString("statue");
-                    String[] datas = {idFicheFrais, montant_total, refund_total, idUserValidation, statue};
+                    String[] datas = {montant_total, refund_total, statue};
                     if( idFicheFrais != null){
-                        addRowToLayout(datas);
+                        if(i % 2 == 0){
+                            addRowToLayout(datas, true);
+                        }else addRowToLayout(datas, false);
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -65,7 +71,7 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
         super.onPostExecute(s);
     }
 
-    private void addRowToLayout(String[] datas){
+    private void addRowToLayout(String[] datas, boolean isPair){
         //creation du linearLayout horizontal -> une ligne
         LinearLayout newRow = new LinearLayout(context);
         newRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -74,10 +80,13 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
                 //width
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 //height
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                200
         );
         newRow.setLayoutParams(layoutParams);
-
+        newRow.setGravity(Gravity.CENTER);
+        if(isPair){
+            newRow.setBackgroundColor(Color.LTGRAY);
+        }
 
         //ajout des colonnes a chaque ligne
         int i = 0;

@@ -2,29 +2,35 @@ package com.furrioxx.connexiongsb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.async.GetCostSheet;
 import com.furrioxx.connexiongsb.entity.User;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class DashboardVisitor extends AppCompatActivity {
+public class DashboardVisitorActivity extends AppCompatActivity {
 
     private TextView titleNameDashboard;
     private User user;
     private LinearLayout costSheetLinearLayout;
+    private FloatingActionButton addCostSheetButton;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_dashboard_visitor);
 
         titleNameDashboard = findViewById(R.id.titleNameDashboard);
         costSheetLinearLayout = findViewById(R.id.linearLayoutCostSheet);
-
+        addCostSheetButton = findViewById(R.id.addCostSheetButton);
+        context = this;
 
         Intent intent = getIntent();
         if (intent != null){
@@ -32,6 +38,14 @@ public class DashboardVisitor extends AppCompatActivity {
             user = intent.getParcelableExtra("user");
             if (user != null){
                 initialize();
+                addCostSheetButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intentAddCostSheet = new Intent(context, addCostSheetActivity.class);
+                        intentAddCostSheet.putExtra("user", user);
+                        context.startActivity(intentAddCostSheet);
+                    }
+                });
             }
         }
     }

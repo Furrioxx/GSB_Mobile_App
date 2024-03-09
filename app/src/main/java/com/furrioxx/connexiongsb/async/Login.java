@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import com.furrioxx.connexiongsb.R;
-import com.furrioxx.connexiongsb.activities.DashboardVisitor;
+import com.furrioxx.connexiongsb.activities.DashboardVisitorActivity;
 import com.furrioxx.connexiongsb.entity.User;
 import com.furrioxx.connexiongsb.utils.NetworkUtils;
 
@@ -68,7 +68,7 @@ public class Login extends AsyncTask<String, Void, String> {
 
                 if(user.getStatut() == User.Role.VISITEUR){
                     //redirection vers activity DashboardVisiteur
-                    Intent intent = new Intent(context, DashboardVisitor.class);
+                    Intent intent = new Intent(context, DashboardVisitorActivity.class);
                     intent.putExtra("user", user);
                     context.startActivity(intent);
                 } else if (user.getStatut() == User.Role.COMPTABLE) {

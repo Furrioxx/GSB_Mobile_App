@@ -6,4 +6,9 @@
     <string name="login_btn">Se Connecter</string>
     <string name="error_login_message">Votre identifiant ou votre mot de passe est incorrect</string>
     <string name="base_title_name_dashboard">Bonjour</string>
+    <string name="title_your_cost_sheet">Vos fiches de frais</string>
+    <string name="title_montant_total">Montant renseigné</string>
+    <string name="title_refund_total">Montant remboursé</string>
+    <string name="title_statut">Statut</string>
+    <string name="title_action">Actions</string>
 </resources>
