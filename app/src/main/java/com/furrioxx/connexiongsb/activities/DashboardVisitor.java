@@ -2,20 +2,16 @@ package com.furrioxx.connexiongsb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.async.GetCostSheet;
-import com.furrioxx.connexiongsb.async.Login;
 import com.furrioxx.connexiongsb.entity.User;
 
-public class Dashboard extends AppCompatActivity {
+public class DashboardVisitor extends AppCompatActivity {
 
     private TextView titleNameDashboard;
     private User user;

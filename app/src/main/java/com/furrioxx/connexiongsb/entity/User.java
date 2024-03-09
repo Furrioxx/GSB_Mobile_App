@@ -2,6 +2,7 @@ package com.furrioxx.connexiongsb.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -16,6 +17,13 @@ public class User implements Parcelable {
     private static String statut;
     private static String ppLink;
     private static String token;
+    private String TAG = "User";
+
+    public static enum Role{
+        VISITEUR,
+        COMPTABLE,
+        ADMIN
+    }
 
     public User(int id, String surname, String name, String mail, String adress, String cp, String ville, String statut, String ppLink, String token){
         this.id = id;
@@ -76,8 +84,16 @@ public class User implements Parcelable {
     public String getVille(){
         return this.ville;
     }
-    public String getStatut(){
-        return this.statut;
+    public Role getStatut(){
+        Role role = null;
+        if(this.statut.equals("visiteur")){
+            role = role.VISITEUR;
+        } else if (this.statut.equals("comptable")) {
+            role = role.COMPTABLE;
+        }else{
+            role = role.ADMIN;
+        }
+        return role;
     }
     public String getPpLink(){
         return this.ppLink;

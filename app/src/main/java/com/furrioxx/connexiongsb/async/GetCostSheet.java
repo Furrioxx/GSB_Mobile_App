@@ -1,16 +1,12 @@
 package com.furrioxx.connexiongsb.async;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.furrioxx.connexiongsb.activities.Dashboard;
-import com.furrioxx.connexiongsb.entity.User;
 import com.furrioxx.connexiongsb.utils.NetworkUtils;
 
 import org.json.JSONArray;

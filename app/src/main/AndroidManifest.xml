@@ -15,7 +15,7 @@
         android:theme="@style/Theme.ConnexionGSB"
         tools:targetApi="31" >
         <activity
-            android:name=".activities.Dashboard"
+            android:name=".activities.DashboardVisitor"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"

@@ -13,7 +13,7 @@ import com.furrioxx.connexiongsb.async.Login;
 import com.furrioxx.connexiongsb.R;
 
 public class MainActivity extends AppCompatActivity {
-    private Context context = this;
+    private final Context context = this;
 
 
     @Override
