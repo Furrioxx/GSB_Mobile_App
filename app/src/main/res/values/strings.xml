@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GSB</string>
+    <string name="loginH1">Se Connecter</string>
+    <string name="identifiant">Identifiant</string>
+    <string name="password">Mot de passe</string>
+    <string name="login_btn">Se Connecter</string>
+    <string name="error_login_message">Votre identifiant ou votre mot de passe est incorrect</string>
+    <string name="base_title_name_dashboard">Bonjour</string>
+</resources>
