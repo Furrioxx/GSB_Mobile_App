@@ -7,16 +7,16 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 public class User implements Parcelable {
-    private static int id;
-    private static String surname;
-    private static String name;
-    private static String mail;
-    private static String adress;
-    private static String cp;
-    private static String ville;
-    private static String statut;
-    private static String ppLink;
-    private static String token;
+    private int id;
+    private String surname;
+    private String name;
+    private String mail;
+    private String adress;
+    private String cp;
+    private String ville;
+    private String statut;
+    private String ppLink;
+    private String token;
     private String TAG = "User";
 
     public static enum Role{
@@ -39,16 +39,16 @@ public class User implements Parcelable {
     }
 
     protected User(Parcel in) {
-        name = in.readString();
-        surname = in.readString();
-        id = in.readInt();
-        mail = in.readString();
-        adress = in.readString();
-        cp = in.readString();
-        ville = in.readString();
-        statut = in.readString();
-        ppLink = in.readString();
-        token = in.readString();
+        this.name = in.readString();
+        this.surname = in.readString();
+        this.id = in.readInt();
+        this.mail = in.readString();
+        this.adress = in.readString();
+        this.cp = in.readString();
+        this.ville = in.readString();
+        this.statut = in.readString();
+        this.ppLink = in.readString();
+        this.token = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
