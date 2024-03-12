@@ -39,11 +39,6 @@ public class DashboardVisitorActivity extends AppCompatActivity {
         addCostSheetButton = findViewById(R.id.addCostSheetButton);
         context = this;
 
-        //bottom navigation
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        //set wich item is selected
-        bottomNavigationView.setSelectedItemId(R.id.home);
-
         Intent intent = getIntent();
         if (intent != null){
             //récupération de l'utilisateur
@@ -62,12 +57,21 @@ public class DashboardVisitorActivity extends AppCompatActivity {
         }
     }
     protected void initialize(){
+        this.setNavigation();
+
         //affiche le nom et prénom de l'utilisateur connecté
         String displayName = " " + user.getName() + " " + user.getSurname();
         titleNameDashboard.append(displayName);
 
         String[] param = {user.getMail() , user.getToken(), user.getId().toString(), "all"};
         new GetCostSheet(this, costSheetLinearLayout, user).execute(param);
+    }
+
+    private void setNavigation(){
+        //bottom navigation
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        //set wich item is selected
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
         //création des listener de la navigation
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

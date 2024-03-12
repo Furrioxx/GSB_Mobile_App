@@ -33,11 +33,6 @@ public class CostDetailActivity extends AppCompatActivity {
         titleRefundCostTv = findViewById(R.id.titleRefundTotal);
         titleStateCostSheetTv = findViewById(R.id.titleStateCostSheet);
 
-        //bottom navigation
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        //set wich item is selected
-        bottomNavigationView.setSelectedItemId(R.id.home);
-
         Intent intent = getIntent();
         if (intent != null){
             //récupération de l'utilisateur
@@ -51,8 +46,17 @@ public class CostDetailActivity extends AppCompatActivity {
 
     }
     private void initialize(){
+        this.setNavigation();
+
         String[] param = {user.getMail() , user.getToken(), idFicheFrais};
         new GetCost(this, linearLayoutCostDetail ,titleTotalCostTv, titleRefundCostTv, titleStateCostSheetTv).execute(param);
+    }
+
+    private void setNavigation(){
+        //bottom navigation
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        //set wich item is selected
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
         //création des listener de la navigation
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

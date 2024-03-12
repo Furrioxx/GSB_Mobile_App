@@ -20,11 +20,6 @@ public class AddCostSheetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cost_sheet);
 
-        //bottom navigation
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        //set wich item is selected
-        bottomNavigationView.setSelectedItemId(R.id.add);
-
         Intent intent = getIntent();
         if (intent != null){
             //récupération de l'utilisateur
@@ -36,6 +31,15 @@ public class AddCostSheetActivity extends AppCompatActivity {
     }
 
     private void initialize(){
+        this.setNavigation();
+    }
+
+    private void setNavigation(){
+        //bottom navigation
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        //set wich item is selected
+        bottomNavigationView.setSelectedItemId(R.id.add);
+
         //création des listener de la navigation
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 

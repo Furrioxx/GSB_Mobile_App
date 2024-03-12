@@ -21,11 +21,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        //bottom navigation
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        //set wich item is selected
-        bottomNavigationView.setSelectedItemId(R.id.profil);
-
         Intent intent = getIntent();
         if (intent != null){
             //récupération de l'utilisateur
@@ -37,6 +32,15 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initialize(){
+        this.setNavigation();
+    }
+
+    private void setNavigation(){
+        //bottom navigation
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        //set wich item is selected
+        bottomNavigationView.setSelectedItemId(R.id.profil);
+
         //création des listener de la navigation
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
