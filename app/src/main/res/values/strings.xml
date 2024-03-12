@@ -23,4 +23,10 @@
     <string name="title_state_cost_sheet">Etat de la fiche de frais :</string>
     <string name="title_your_cost">Vos frais :</string>
 
+    <string name="navigation_home">Accueil</string>
+    <string name="navigation_add">Ajouter</string>
+    <string name="navigation_profile">Profil</string>
+
+    <string name="speakable_add_floating_button">Ajouter une fiche de frais</string>
+
 </resources>

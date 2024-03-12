@@ -11,19 +11,20 @@ import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class AddCostSheetActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
+
+    private User user;
 
     private BottomNavigationView bottomNavigationView;
-    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_cost_sheet);
+        setContentView(R.layout.activity_profile);
 
         //bottom navigation
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         //set wich item is selected
-        bottomNavigationView.setSelectedItemId(R.id.add);
+        bottomNavigationView.setSelectedItemId(R.id.profil);
 
         Intent intent = getIntent();
         if (intent != null){
@@ -44,14 +45,14 @@ public class AddCostSheetActivity extends AppCompatActivity {
 
                 int itemId = item.getItemId();
                 if (itemId == R.id.add) {
+                    startActivity(new Intent(getApplicationContext(), AddCostSheetActivity.class).putExtra("user", user));
+                    overridePendingTransition(0,0);
                     return true;
                 } else if (itemId == R.id.home) {
                     startActivity(new Intent(getApplicationContext(), DashboardVisitorActivity.class).putExtra("user", user));
                     overridePendingTransition(0,0);
                     return true;
                 } else if (itemId == R.id.profil) {
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class).putExtra("user", user));
-                    overridePendingTransition(0,0);
                     return true;
                 }
                 return false;

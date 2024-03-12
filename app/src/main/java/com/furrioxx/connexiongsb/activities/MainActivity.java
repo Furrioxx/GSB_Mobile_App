@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
         EditText passwordInput = findViewById(R.id.passwordInput);
         TextView errorLoginMessage = findViewById(R.id.errorLoginTextView);
 
-        requestQueue = Volley.newRequestQueue(MainActivity.this);
-
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
