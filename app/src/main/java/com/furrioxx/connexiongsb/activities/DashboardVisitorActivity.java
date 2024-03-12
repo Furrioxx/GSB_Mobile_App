@@ -41,7 +41,7 @@ public class DashboardVisitorActivity extends AppCompatActivity {
                 addCostSheetButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intentAddCostSheet = new Intent(context, addCostSheetActivity.class);
+                        Intent intentAddCostSheet = new Intent(context, AddCostSheetActivity.class);
                         intentAddCostSheet.putExtra("user", user);
                         context.startActivity(intentAddCostSheet);
                     }
@@ -55,6 +55,6 @@ public class DashboardVisitorActivity extends AppCompatActivity {
         titleNameDashboard.append(displayName);
 
         String[] param = {user.getMail() , user.getToken(), user.getId().toString(), "all"};
-        new GetCostSheet(this, costSheetLinearLayout).execute(param);
+        new GetCostSheet(this, costSheetLinearLayout, user).execute(param);
     }
 }

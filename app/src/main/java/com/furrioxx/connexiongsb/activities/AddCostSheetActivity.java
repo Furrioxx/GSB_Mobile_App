@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.entity.User;
 
-public class addCostSheetActivity extends AppCompatActivity {
+public class AddCostSheetActivity extends AppCompatActivity {
 
     private User user;
     @Override

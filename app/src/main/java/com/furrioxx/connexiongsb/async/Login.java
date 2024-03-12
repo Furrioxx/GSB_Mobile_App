@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.activities.DashboardVisitorActivity;
@@ -82,6 +83,7 @@ public class Login extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             e.printStackTrace();
             errorTextView.get().setText(R.string.error_login_message);
+            Toast.makeText(context, R.string.error_login_message, Toast.LENGTH_LONG).show();
         }
 
         super.onPostExecute(s);

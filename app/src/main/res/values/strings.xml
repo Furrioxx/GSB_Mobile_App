@@ -11,4 +11,16 @@
     <string name="title_refund_total">Montant remboursé</string>
     <string name="title_statut">Statut</string>
     <string name="title_action">Actions</string>
+    <string name="title_libelle">Libelle</string>
+    <string name="title_cost_detail">Fiche de frais n°</string>
+
+    <string name="diaog_delete_cost_sheet_title">Voulez-vous supprimer la fiche de frais ?</string>
+    <string name="cancel">Annuler</string>
+    <string name="validate">Valider</string>
+
+    <string name="title_total_cost">Montant total :</string>
+    <string name="title_total_cost_refund">Montant remboursé :</string>
+    <string name="title_state_cost_sheet">Etat de la fiche de frais :</string>
+    <string name="title_your_cost">Vos frais :</string>
+
 </resources>

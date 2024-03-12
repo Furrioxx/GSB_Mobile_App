@@ -18,7 +18,6 @@ import androidx.fragment.app.DialogFragment;
 import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.activities.CostDetailActivity;
 import com.furrioxx.connexiongsb.activities.DashboardVisitorActivity;
-import com.furrioxx.connexiongsb.entity.User;
 import com.furrioxx.connexiongsb.utils.DeleteCostSheetDialog;
 import com.furrioxx.connexiongsb.utils.NetworkUtils;
 
@@ -27,62 +26,81 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-public class GetCostSheet extends AsyncTask<String, Void, String> {
-    private static final String TAG = "MyAsyncTask";
-    public static final String ID_FICHE_FRAIS = "com.furrioxx.connexiongsb.extra.ID_FICHE_FRAIS";
+public class GetCost extends AsyncTask<String, Void, String> {
+    private static final String TAG = "GetCost";
     private Context context;
-    private User user;
-    private final WeakReference<LinearLayout> linearLayoutCostSheet;
+    private WeakReference<LinearLayout> linearLayoutCost;
+    private WeakReference<TextView> totalCostTv, refundCostTv, stateCostSheetTv;
 
-    public GetCostSheet(Context activityContext, LinearLayout layout, User userConnected){
+    public GetCost(Context activityContext, LinearLayout layout, TextView totalCost, TextView refundCost, TextView stateCost){
         this.context = activityContext;
-        this.user = userConnected;
-        linearLayoutCostSheet = new WeakReference<>(layout);
+        linearLayoutCost = new WeakReference<>(layout);
+        totalCostTv = new WeakReference<>(totalCost);
+        refundCostTv = new WeakReference<>(refundCost);
+        stateCostSheetTv = new WeakReference<>(stateCost);
     }
 
     @Override
     protected String doInBackground(String... strings) {
-        return NetworkUtils.getCostSheet(strings[0], strings[1], strings[2], strings[3]);
+        return NetworkUtils.getCost(strings[0], strings[1], strings[2]);
     }
 
     @Override
     protected void onPostExecute(String s) {
         try {
-            Log.d(TAG, "Réponse de l'API : " + s);
             JSONObject jsonObject = new JSONObject(s);
             JSONArray itemsArray = jsonObject.getJSONArray("data");
             int i = 0;
-            String idFicheFrais = null;
+            String idCost = null;
+            String libelle = null;
+            String montant = null;
+            String refund_montant = null;
+            String status = null;
             String montant_total = null;
             String refund_total = null;
-            String idUserValidation = null;
-            String statue = null;
+            String linkJustif = null;
 
             while (i < itemsArray.length()) {
-                JSONObject costSheet = itemsArray.getJSONObject(i);
+                JSONObject cost = itemsArray.getJSONObject(i);
+                Log.d(TAG, "Réponse de l'API getCost : " + cost);
                 try {
-                    idFicheFrais = costSheet.getString("idFicheFrais");
-                    montant_total = costSheet.getString("montant_total") + " €";
-                    refund_total = costSheet.getString("refund_total") + " €";
-                    idUserValidation = costSheet.getString("idUserValidation");
-                    statue  = costSheet.getString("statue");
-                    String[] datas = {montant_total, refund_total, statue, idFicheFrais};
-                    if( idFicheFrais != null){
+                    idCost = cost.getString("id");
+                    libelle = cost.getString("libelle");
+                    montant = cost.getString("montant") + " €";
+                    if(cost.getString("refund_montant").equals("null")){
+                        refund_montant = "-";
+                    }else{
+                        refund_montant = cost.getString("refund_montant") + " €";
+                    }
+
+
+                    status  = cost.getString("statue");
+                    montant_total = cost.getString("montant_total");
+                    refund_total = cost.getString("refund_total");
+                    linkJustif = cost.getString("linkJustif");
+                    String[] datas = {libelle, montant, refund_montant, idCost};
+                    if( idCost != null){
+
                         // i % 2 pour avoir un tableau stripped
-                        if(i % 2 == 0){
-                            addRowToLayout(datas, true);
-                        }else addRowToLayout(datas, false);
+                        addRowToLayout(datas, i % 2 == 0);
 
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 i++;
             }
+
+            totalCostTv.get().append( " " + montant_total + " €");
+            refundCostTv.get().append( " " + refund_total + " €");
+            stateCostSheetTv.get().append( " " + status);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         super.onPostExecute(s);
+
     }
 
     private void addRowToLayout(String[] datas, boolean isPair){
@@ -104,7 +122,7 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
 
         //ajout des colonnes a chaque ligne
         int i = 0;
-        // data.length -1 car on ne veut pas afficher l'id de la fiche de frais
+        // data.length -1 car on ne veut pas afficher l'id du frais
         while(i < datas.length -1){
             TextView newColumn = new TextView(context);
             newColumn.setText(datas[i]);
@@ -121,25 +139,8 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
             newRow.addView(newColumn);
             i++;
         }
-        newRow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CostDetailActivity.class);
-                intent.putExtra(ID_FICHE_FRAIS, datas[datas.length -1]); //data.length - 1 correspond a idFicheFrais
-                intent.putExtra("user", user);
-                context.startActivity(intent);
-            }
-        });
-        newRow.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                DialogFragment dialog = new DeleteCostSheetDialog(user, datas[datas.length -1], context);
-                dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "game");
-                return false;
-            }
-        });
 
         //ajout de la ligne au linear layout de l'activity
-        linearLayoutCostSheet.get().addView(newRow);
+        linearLayoutCost.get().addView(newRow);
     }
 }

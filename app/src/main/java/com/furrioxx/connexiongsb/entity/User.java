@@ -7,14 +7,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 public class User implements Parcelable {
-    private int id;
-    private String surname;
-    private String name;
-    private String mail;
-    private String adress;
-    private String cp;
-    private String ville;
-    private String statut;
+    private static int id;
+    private static String surname;
+    private static String name;
+    private static String mail;
+    private static String adress;
+    private static String cp;
+    private static String ville;
+    private static String statut;
     private String ppLink;
     private String token;
     private String TAG = "User";
