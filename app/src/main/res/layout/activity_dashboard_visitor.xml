@@ -97,9 +97,10 @@
         android:clickable="true"
         android:contentDescription="@string/speakable_add_floating_button"
         android:focusable="true"
+        app:backgroundTint="@color/gsb_blue_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/plus" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -108,6 +109,8 @@
       android:layout_width="match_parent"
       android:layout_height="60dp"
       android:layout_alignParentBottom="true"
+      android:background="@color/gsb_blue"
+      app:itemActiveIndicatorStyle="@style/Theme.ConnexionGSB"
       app:itemBackground="@color/gsb_blue"
       app:itemIconTint="@drawable/selector"
       app:itemTextColor="@drawable/selector"

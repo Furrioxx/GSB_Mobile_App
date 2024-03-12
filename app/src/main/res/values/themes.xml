@@ -2,7 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.ConnexionGSB" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/gsb_blue</item>
+        <item name="colorOnSurfaceInverse">@color/gsb_blue</item>
     </style>
 
     <style name="Theme.ConnexionGSB" parent="Base.Theme.ConnexionGSB" />

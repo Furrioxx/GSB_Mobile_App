@@ -26,6 +26,7 @@
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:itemActiveIndicatorStyle="@style/Theme.ConnexionGSB"
         app:menu="@menu/menu_navigation"
         tools:layout_editor_absoluteX="0dp" />
 
