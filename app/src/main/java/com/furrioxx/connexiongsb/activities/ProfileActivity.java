@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.entity.User;
@@ -14,12 +15,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ProfileActivity extends AppCompatActivity {
 
     private User user;
+    private TextView titleProfileTv;
 
     private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        titleProfileTv = findViewById(R.id.titleProfileTv);
 
         Intent intent = getIntent();
         if (intent != null){
@@ -33,6 +37,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void initialize(){
         this.setNavigation();
+
+        titleProfileTv.append(" "  + user.getName() + " " + user.getSurname());
     }
 
     private void setNavigation(){
