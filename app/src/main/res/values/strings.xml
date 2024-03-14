@@ -1,10 +1,14 @@
 <resources>
+
+    <!--login page-->
     <string name="app_name">GSB</string>
     <string name="loginH1">Se Connecter</string>
     <string name="identifiant">Identifiant</string>
     <string name="password">Mot de passe</string>
     <string name="login_btn">Se Connecter</string>
     <string name="error_login_message">Votre identifiant ou votre mot de passe est incorrect</string>
+
+    <!--home page-->
     <string name="base_title_name_dashboard">Bonjour</string>
     <string name="title_your_cost_sheet">Vos fiches de frais</string>
     <string name="title_montant_total">Montant renseigné</string>
@@ -14,21 +18,66 @@
     <string name="title_libelle">Libelle</string>
     <string name="title_cost_detail">Fiche de frais n°</string>
 
+
+    <!--Dialog delete cost and cost sheet-->
     <string name="diaog_delete_cost_sheet_title">Voulez-vous supprimer la fiche de frais ?</string>
     <string name="cancel">Annuler</string>
     <string name="validate">Valider</string>
 
+    <!--cost sheet detail page-->
     <string name="title_total_cost">Montant total :</string>
     <string name="title_total_cost_refund">Montant remboursé :</string>
     <string name="title_state_cost_sheet">Etat de la fiche de frais :</string>
     <string name="title_your_cost">Vos frais :</string>
 
+
+    <!--navigation-->
     <string name="navigation_home">Accueil</string>
     <string name="navigation_add">Ajouter</string>
     <string name="navigation_profile">Profil</string>
 
-    <string name="speakable_add_floating_button">Ajouter une fiche de frais</string>
 
+    <!--profile page-->
     <string name="title_profile">Profil de</string>
+    <string name="disconect_btn">Se déconnecter</string>
+    <string name="change_password_btn">Changer de mot de passe</string>
 
+    <!--add cost page-->
+    <string name="title_add_cost_sheet">Ajouter une fiche de frais</string>
+
+    <string name="title_date_section">Date</string>
+    <string name="title_begin_date">Date de début :</string>
+    <string name="title_end_date">Date de fin :</string>
+    <string name="title_date_hint">jj/mm/aaaa</string>
+
+    <string name="title_transport_section">Transport</string>
+    <string name="switch_car_text">Voiture</string>
+    <string name="switch_other_text">Autres</string>
+
+    <string name="title_km">Entrez le nombre de kilomètre parcouru :</string>
+    <string name="input_km_hint">10km</string>
+
+    <string name="title_transport_autre_montant">Entrez le montant du transport :</string>
+    <string name="input_transport_autre_montant_hint">17.98€</string>
+
+    <string name="title_hebergement_section">Hébergement</string>
+    <string name="title_hebergement_number">Entrez le nombre de nuité :</string>
+    <string name="title_hebergement_number_hint">2 nuits</string>
+    <string name="title_hebergement_price">Entrez le montant de l\'hébergment :</string>
+    <string name="title_hebergement_price_hint">68.30€</string>
+
+    <string name="title_alimentation_section">Alimentation</string>
+    <string name="title_alimentation_number">Entrez le nombre de repas :</string>
+    <string name="title_alimentation_number_hint">2 repas</string>
+    <string name="title_alimentation_price">Entrez le montant de l\'alimentation :</string>
+    <string name="title_alimentation_price_hint">47.87€</string>
+
+    <string name="title_autre_section">Autre</string>
+    <string name="title_autre_libelle">Entrez le libelle :</string>
+    <string name="title_autre_libelle_hint">autres</string>
+    <string name="title_autre_montant">Entrez le montant :</string>
+    <string name="title_autre_montant_hint">12.75€</string>
+    <string name="title_autre_file">Choisir un fichier :</string>
+    <string name="title_autre_file_btn">Selectionner</string>
+    <string name="button_new_cost_sheet">Créer la fiche de frais</string>
 </resources>

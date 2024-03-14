@@ -10,15 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.Volley;
 import com.furrioxx.connexiongsb.async.Login;
 import com.furrioxx.connexiongsb.R;
-import com.android.volley.RequestQueue;
 
 public class MainActivity extends AppCompatActivity {
     private final Context context = this;
-    RequestQueue requestQueue;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

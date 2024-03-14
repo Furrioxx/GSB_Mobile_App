@@ -3,9 +3,12 @@ package com.furrioxx.connexiongsb.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.furrioxx.connexiongsb.R;
@@ -16,6 +19,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private User user;
     private TextView titleProfileTv;
+    private Button disconnectBtn;
+
+    private Context context = this;
 
     private BottomNavigationView bottomNavigationView;
     @Override
@@ -24,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         titleProfileTv = findViewById(R.id.titleProfileTv);
+        disconnectBtn = findViewById(R.id.disconectBtn);
 
         Intent intent = getIntent();
         if (intent != null){
@@ -39,6 +46,16 @@ public class ProfileActivity extends AppCompatActivity {
         this.setNavigation();
 
         titleProfileTv.append(" "  + user.getName() + " " + user.getSurname());
+
+        disconnectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent deconnectIntent = new Intent(context, MainActivity.class);
+                //ferme toute les activités dans la pile et empeche donc le retour apres déconnexion
+                deconnectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(deconnectIntent);
+            }
+        });
     }
 
     private void setNavigation(){

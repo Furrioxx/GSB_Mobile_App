@@ -27,6 +27,8 @@ public class DeleteCostSheet extends AsyncTask<String, Void, String> {
         Toast.makeText(context, "La fiche de frais à été supprimé", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(context, DashboardVisitorActivity.class);
         intent.putExtra("user", user);
+        //ferme toute les activités dans la pile et empeche donc le retour apres déconnexion
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
         super.onPostExecute(s);
     }

@@ -103,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:contentDescription="@string/speakable_add_floating_button"
+        android:contentDescription="@string/title_add_cost_sheet"
         android:focusable="true"
         app:backgroundTint="@color/gsb_blue_light"
         app:layout_constraintBottom_toBottomOf="parent"
