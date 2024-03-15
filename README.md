@@ -1,3 +1,6 @@
+## Installation :
+:warning: Nom du projet : ConnexionGSB
+
 ## connexion : 
 ### Visiteur médical :
 * login : jean.bourdin@gmail.com
