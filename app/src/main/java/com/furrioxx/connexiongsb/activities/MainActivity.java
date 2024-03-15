@@ -1,8 +1,11 @@
 package com.furrioxx.connexiongsb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +18,8 @@ import com.furrioxx.connexiongsb.R;
 
 public class MainActivity extends AppCompatActivity {
     private final Context context = this;
+    private static final int REQUEST_STORAGE_PERMISSION = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,5 +47,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        // Vérifiez si la permission est déjà accordée
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Demandez la permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_STORAGE_PERMISSION);
+        }
     }
 }

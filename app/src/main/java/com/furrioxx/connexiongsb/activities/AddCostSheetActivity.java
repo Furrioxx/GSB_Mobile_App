@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,8 +19,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.furrioxx.connexiongsb.R;
+import com.furrioxx.connexiongsb.async.AddCostSheet;
 import com.furrioxx.connexiongsb.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,9 +34,11 @@ public class AddCostSheetActivity extends AppCompatActivity {
     private User user;
     private Switch switchTransportInput;
     private TextView kmInputTextview, InputMontantAutreTextview, InputFileTransportAutreTextview;
-    private Button InputFileTransportAutre, autreFileBtn;
-    private EditText kmInput, InputMontantAutre;
+    private Button InputFileTransportAutre, autreFileBtn, submitNewCostSheet;
+    private EditText beginDateInput, endDateInput ,kmInput,InputMontantTransportAutre,herbergementNumberInput, hebergementPriceInput, alimentationNumberInput,alimentationPriceInput , autreLibelleInput, autreMontantInput;
     private ImageView otherFileImageView, transportFileImageView;
+    private Uri imageTransportURI,imageAutreURI;
+    private String imageTransportPath;
     private static final int PICK_IMAGE_REQUEST_OTHER = 1;
     private static final int PICK_IMAGE_REQUEST_TRANSPORT = 2;
     private final String TAG = "AddCostSheet";
@@ -41,6 +46,10 @@ public class AddCostSheetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cost_sheet);
+
+        //Dates
+        beginDateInput = findViewById(R.id.beginDateInput);
+        endDateInput = findViewById(R.id.endDateInput);
 
         //transport
         switchTransportInput = findViewById(R.id.switchTransportInput);
@@ -50,14 +59,28 @@ public class AddCostSheetActivity extends AppCompatActivity {
         InputFileTransportAutreTextview = findViewById(R.id.InputFileTransportAutreTextview);
 
         kmInput = findViewById(R.id.kmInput);
-        InputMontantAutre = findViewById(R.id.InputMontantTransportAutre);
+        InputMontantTransportAutre = findViewById(R.id.InputMontantTransportAutre);
         InputFileTransportAutre = findViewById(R.id.InputFileTransportAutre);
 
         transportFileImageView = findViewById(R.id.transportFileImageView);
 
+        //hébergement
+        herbergementNumberInput = findViewById(R.id.herbergementNumberInput);
+        hebergementPriceInput = findViewById(R.id.hebergementPriceInput);
+
+        //alimentation
+        alimentationNumberInput = findViewById(R.id.alimentationNumberInput);
+        alimentationPriceInput = findViewById(R.id.alimentationPriceInput);
+
         //autre
+        autreLibelleInput = findViewById(R.id.autreLibelleInput);
+        autreMontantInput = findViewById(R.id.autreMontantInput);
+
         autreFileBtn = findViewById(R.id.autreFileBtn);
         otherFileImageView = findViewById(R.id.otherFileImageView);
+
+        //bouter envoyer
+        submitNewCostSheet = findViewById(R.id.submitNewCostSheet);
 
         Intent intent = getIntent();
         if (intent != null){
@@ -79,7 +102,7 @@ public class AddCostSheetActivity extends AppCompatActivity {
                     switchTransportInput.setText(R.string.switch_other_text);
 
                     InputMontantAutreTextview.setVisibility(View.VISIBLE);
-                    InputMontantAutre.setVisibility(View.VISIBLE);
+                    InputMontantTransportAutre.setVisibility(View.VISIBLE);
                     InputFileTransportAutreTextview.setVisibility(View.VISIBLE);
                     InputFileTransportAutre.setVisibility(View.VISIBLE);
 
@@ -90,7 +113,7 @@ public class AddCostSheetActivity extends AppCompatActivity {
                     switchTransportInput.setText(R.string.switch_car_text);
 
                     InputMontantAutreTextview.setVisibility(View.GONE);
-                    InputMontantAutre.setVisibility(View.GONE);
+                    InputMontantTransportAutre.setVisibility(View.GONE);
                     InputFileTransportAutreTextview.setVisibility(View.GONE);
                     InputFileTransportAutre.setVisibility(View.GONE);
 
@@ -115,6 +138,14 @@ public class AddCostSheetActivity extends AppCompatActivity {
                 startActivityForResult(selectFileOther, PICK_IMAGE_REQUEST_TRANSPORT);
             }
         });
+
+        //lorsque le bouton de creation de fiche de frais est cliqué
+        submitNewCostSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCostSheet();
+            }
+        });
     }
 
     @Override
@@ -136,9 +167,9 @@ public class AddCostSheetActivity extends AppCompatActivity {
         //récupération de l'image de la partie 'Transport Autre'
         if(requestCode == PICK_IMAGE_REQUEST_TRANSPORT && resultCode == RESULT_OK && data != null && data.getData() != null){
             try{
-                Uri imageUri = data.getData();
-                Log.d(TAG,imageUri.toString());
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                imageTransportURI = data.getData();
+                imageTransportPath = getPathFromURI(imageTransportURI);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageTransportURI);
                 transportFileImageView.setVisibility(View.VISIBLE);
                 transportFileImageView.setImageBitmap(bitmap);
             }catch (IOException e){
@@ -146,6 +177,20 @@ public class AddCostSheetActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    private String getPathFromURI(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        String filePath = null;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                filePath = cursor.getString(columnIndex);
+            }
+            cursor.close();
+        }
+        return filePath;
     }
 
     private void setNavigation(){
@@ -175,5 +220,33 @@ public class AddCostSheetActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void sendCostSheet(){
+        String beginDate = beginDateInput.getText().toString();
+        String endDate = endDateInput.getText().toString();
+
+        String kmTransport = kmInput.getText().toString();
+        String montantTransport = InputMontantTransportAutre.getText().toString();
+        //le fichier
+
+        String herbergementNumber = herbergementNumberInput.getText().toString();
+        String hebergementPrice = hebergementPriceInput.getText().toString();
+
+        String restaurantNumber = alimentationNumberInput.getText().toString();
+        String restaurantPrice = alimentationPriceInput.getText().toString();
+
+        String libelleOther = autreMontantInput.getText().toString();
+        String priceOther = autreMontantInput.getText().toString();
+        //le fichier
+
+
+
+        if(!beginDate.equals("") && !endDate.equals("")){
+            String[] params = {user.getMail(), user.getToken(), imageTransportPath};
+            new AddCostSheet().execute(params);
+        }else{
+            Toast.makeText(getApplicationContext(), "Vous devez entrez des dates", Toast.LENGTH_LONG).show();
+        }
     }
 }
