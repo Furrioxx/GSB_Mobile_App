@@ -37,8 +37,8 @@ public class AddCostSheetActivity extends AppCompatActivity {
     private Button InputFileTransportAutre, autreFileBtn, submitNewCostSheet;
     private EditText beginDateInput, endDateInput ,kmInput,InputMontantTransportAutre,herbergementNumberInput, hebergementPriceInput, alimentationNumberInput,alimentationPriceInput , autreLibelleInput, autreMontantInput;
     private ImageView otherFileImageView, transportFileImageView;
-    private Uri imageTransportURI,imageAutreURI;
-    private String imageTransportPath;
+    private Uri imageTransportURI, imageAutreURI;
+    private String imageTransportPath, imageAutrePath;
     private static final int PICK_IMAGE_REQUEST_OTHER = 1;
     private static final int PICK_IMAGE_REQUEST_TRANSPORT = 2;
     private final String TAG = "AddCostSheet";
@@ -154,9 +154,9 @@ public class AddCostSheetActivity extends AppCompatActivity {
         //récupération de l'image de la partie 'Autre'
         if(requestCode == PICK_IMAGE_REQUEST_OTHER && resultCode == RESULT_OK && data != null && data.getData() != null){
             try{
-                Uri imageUri = data.getData();
-                Log.d(TAG,imageUri.toString());
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                imageAutreURI = data.getData();
+                imageAutrePath = getPathFromURI(imageTransportURI);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageAutreURI);
                 otherFileImageView.setVisibility(View.VISIBLE);
                 otherFileImageView.setImageBitmap(bitmap);
             }catch (IOException e){
@@ -228,7 +228,7 @@ public class AddCostSheetActivity extends AppCompatActivity {
 
         String kmTransport = kmInput.getText().toString();
         String montantTransport = InputMontantTransportAutre.getText().toString();
-        //le fichier
+        //le fichier image (imageTransportPath)
 
         String herbergementNumber = herbergementNumberInput.getText().toString();
         String hebergementPrice = hebergementPriceInput.getText().toString();
@@ -238,12 +238,12 @@ public class AddCostSheetActivity extends AppCompatActivity {
 
         String libelleOther = autreMontantInput.getText().toString();
         String priceOther = autreMontantInput.getText().toString();
-        //le fichier
+        //le fichier image (imageAutrePath)
 
 
 
         if(!beginDate.equals("") && !endDate.equals("")){
-            String[] params = {user.getMail(), user.getToken(), imageTransportPath};
+            String[] params = {user.getMail(), user.getToken(), imageTransportPath, imageAutrePath};
             new AddCostSheet().execute(params);
         }else{
             Toast.makeText(getApplicationContext(), "Vous devez entrez des dates", Toast.LENGTH_LONG).show();

@@ -10,7 +10,7 @@ public class AddCostSheet extends AsyncTask<String, Void, String> {
     private final String TAG = "addCostSheet";
     @Override
     protected String doInBackground(String... strings) {
-        return NetworkUtils.addCostSheet(strings[0], strings[1], strings[2]);
+        return NetworkUtils.addCostSheet(strings[0], strings[1], strings[2], strings[3]);
     }
 
     @Override

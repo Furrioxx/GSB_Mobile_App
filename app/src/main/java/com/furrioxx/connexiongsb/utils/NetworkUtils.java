@@ -255,7 +255,7 @@ public class NetworkUtils {
         return responseJSONString;
     }
 
-    public static String addCostSheet(String mail, String token, String imageTransportPath) {
+    public static String addCostSheet(String mail, String token, String imageTransportPath, String imageAutrePath) {
         Log.d(TAG, imageTransportPath);
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -270,11 +270,12 @@ public class NetworkUtils {
             urlConnection = (HttpURLConnection) requestURL.openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
-            urlConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + UUID.randomUUID().toString());
+            String boundary = UUID.randomUUID().toString();
+            urlConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
 
             // Create the multipart request
             OutputStream outputStream = urlConnection.getOutputStream();
-            String boundary = UUID.randomUUID().toString();
+
 
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
 
@@ -285,7 +286,7 @@ public class NetworkUtils {
 
             // Add files
             addFilePart(outputStream, boundary, "transportFile", imageTransportPath);
-            //addFilePart(outputStream, boundary, "fileOther", imageAutreURI);
+            addFilePart(outputStream, boundary, "fileOther", imageAutrePath);
 
             writer.write("--" + boundary + "--\r\n");
             writer.flush();
