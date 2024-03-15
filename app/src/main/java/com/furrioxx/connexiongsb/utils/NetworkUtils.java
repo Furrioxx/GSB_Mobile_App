@@ -18,7 +18,7 @@ public class NetworkUtils {
     public static String login(String mail, String password){
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-        String bookJSONString = null;
+        String responseJSONString = null;
 
         try{
             Uri builtURI = Uri.parse(BASE_URL).buildUpon()
@@ -52,7 +52,7 @@ public class NetworkUtils {
             if (builder.length() == 0) {
                 return null;
             }
-            bookJSONString = builder.toString();
+            responseJSONString = builder.toString();
 
         }catch(IOException e){
             e.printStackTrace();
@@ -69,14 +69,14 @@ public class NetworkUtils {
             }
         }
 
-        return bookJSONString;
+        return responseJSONString;
     }
 
     public static String getCostSheet(String mail, String token, String idUser, String isTreated){
         Log.d(TAG, "Data envoyé : " + mail + " " +  token + " " +   idUser + " " +   isTreated);
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-        String bookJSONString = null;
+        String responseJSONString = null;
 
         try{
             Uri builtURI = Uri.parse(BASE_URL).buildUpon()
@@ -110,7 +110,7 @@ public class NetworkUtils {
             if (builder.length() == 0) {
                 return null;
             }
-            bookJSONString = builder.toString();
+            responseJSONString = builder.toString();
 
         }catch(IOException e){
             e.printStackTrace();
@@ -127,14 +127,14 @@ public class NetworkUtils {
             }
         }
 
-        return bookJSONString;
+        return responseJSONString;
     }
 
     public static String getCost(String mail, String token, String idCostSheet){
         Log.d(TAG, "Data envoyé : " + mail + " " +  token + " " +   idCostSheet);
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-        String bookJSONString = null;
+        String responseJSONString = null;
 
         try{
             Uri builtURI = Uri.parse(BASE_URL).buildUpon()
@@ -169,7 +169,7 @@ public class NetworkUtils {
             if (builder.length() == 0) {
                 return null;
             }
-            bookJSONString = builder.toString();
+            responseJSONString = builder.toString();
 
         }catch(IOException e){
             e.printStackTrace();
@@ -186,14 +186,14 @@ public class NetworkUtils {
             }
         }
 
-        return bookJSONString;
+        return responseJSONString;
     }
 
     public static String deleteCostSheet(String mail, String token, String idCostSheet){
         Log.d(TAG, "Data envoyé : " + mail + " " +  token + " " +   idCostSheet);
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-        String bookJSONString = null;
+        String responseJSONString = null;
 
         try{
             Uri builtURI = Uri.parse(BASE_URL).buildUpon()
@@ -228,7 +228,7 @@ public class NetworkUtils {
             if (builder.length() == 0) {
                 return null;
             }
-            bookJSONString = builder.toString();
+            responseJSONString = builder.toString();
 
         }catch(IOException e){
             e.printStackTrace();
@@ -245,6 +245,6 @@ public class NetworkUtils {
             }
         }
 
-        return bookJSONString;
+        return responseJSONString;
     }
 }
