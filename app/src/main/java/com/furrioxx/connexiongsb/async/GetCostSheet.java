@@ -3,16 +3,19 @@ package com.furrioxx.connexiongsb.async;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.furrioxx.connexiongsb.R;
@@ -115,12 +118,25 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
                     // Height
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     // weight
-                    1f
+                    2.5f
             );
             newColumn.setLayoutParams(columnLayoutParams);
+            newColumn.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             newRow.addView(newColumn);
             i++;
         }
+        ImageView deleteButton = new ImageView(context);
+        deleteButton.setImageResource(R.drawable.delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialog = new DeleteCostSheetDialog(user, datas[datas.length -1], context);
+                dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "game");
+            }
+        });
+        newRow.addView(deleteButton);
+
+
         newRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

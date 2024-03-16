@@ -79,5 +79,6 @@
     <string name="title_autre_montant_hint">12.75€</string>
     <string name="title_autre_file">Choisir un fichier :</string>
     <string name="title_autre_file_btn">Selectionner</string>
+
     <string name="button_new_cost_sheet">Créer la fiche de frais</string>
 </resources>
