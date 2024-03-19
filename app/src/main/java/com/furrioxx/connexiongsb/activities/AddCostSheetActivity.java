@@ -38,7 +38,7 @@ public class AddCostSheetActivity extends AppCompatActivity {
     private EditText beginDateInput, endDateInput ,kmInput,InputMontantTransportAutre,herbergementNumberInput, hebergementPriceInput, alimentationNumberInput,alimentationPriceInput , autreLibelleInput, autreMontantInput;
     private ImageView otherFileImageView, transportFileImageView;
     private Uri imageTransportURI, imageAutreURI;
-    private String imageTransportPath, imageAutrePath;
+    private String imageTransportPath = "", imageAutrePath = "";
     private static final int PICK_IMAGE_REQUEST_OTHER = 1;
     private static final int PICK_IMAGE_REQUEST_TRANSPORT = 2;
     private final String TAG = "AddCostSheet";
@@ -108,6 +108,7 @@ public class AddCostSheetActivity extends AppCompatActivity {
 
                     kmInputTextview.setVisibility(View.GONE);
                     kmInput.setVisibility(View.GONE);
+                    kmInput.setText("");
 
                 }else{
                     switchTransportInput.setText(R.string.switch_car_text);
@@ -119,6 +120,12 @@ public class AddCostSheetActivity extends AppCompatActivity {
 
                     kmInputTextview.setVisibility(View.VISIBLE);
                     kmInput.setVisibility(View.VISIBLE);
+
+                    InputMontantTransportAutre.setText("");
+
+                    imageAutrePath = null;
+                    transportFileImageView.setVisibility(View.GONE);
+                    transportFileImageView.setImageBitmap(null);
                 }
             }
         });
@@ -155,7 +162,7 @@ public class AddCostSheetActivity extends AppCompatActivity {
         if(requestCode == PICK_IMAGE_REQUEST_OTHER && resultCode == RESULT_OK && data != null && data.getData() != null){
             try{
                 imageAutreURI = data.getData();
-                imageAutrePath = getPathFromURI(imageTransportURI);
+                imageAutrePath = getPathFromURI(imageAutreURI);
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageAutreURI);
                 otherFileImageView.setVisibility(View.VISIBLE);
                 otherFileImageView.setImageBitmap(bitmap);
@@ -236,15 +243,48 @@ public class AddCostSheetActivity extends AppCompatActivity {
         String restaurantNumber = alimentationNumberInput.getText().toString();
         String restaurantPrice = alimentationPriceInput.getText().toString();
 
-        String libelleOther = autreMontantInput.getText().toString();
+        String libelleOther = autreLibelleInput.getText().toString();
         String priceOther = autreMontantInput.getText().toString();
         //le fichier image (imageAutrePath)
 
 
 
         if(!beginDate.equals("") && !endDate.equals("")){
-            String[] params = {user.getMail(), user.getToken(), imageTransportPath, imageAutrePath};
-            new AddCostSheet().execute(params);
+            //vérification des champs avant envoie
+            if(!herbergementNumber.equals("") && hebergementPrice.equals("") || herbergementNumber.equals("") && !hebergementPrice.equals("")){
+                Toast.makeText(getApplicationContext(), "Vous devez remplir tous les champs 'hébergement'", Toast.LENGTH_LONG).show();
+            }
+            else if(!restaurantNumber.equals("") && restaurantPrice.equals("") || restaurantNumber.equals("") && !restaurantPrice.equals("")){
+                Toast.makeText(getApplicationContext(), "Vous devez remplir tous les champs 'restauration'", Toast.LENGTH_LONG).show();
+            }
+            else if ((libelleOther.equals("") || priceOther.equals("") || imageAutrePath.equals(""))
+                    && !(libelleOther.equals("") && priceOther.equals("") && imageAutrePath.equals(""))
+            ) {
+                Toast.makeText(getApplicationContext(), "Vous devez remplir tous les champs 'Autre'", Toast.LENGTH_LONG).show();
+            }
+            else if (!montantTransport.equals("") && imageTransportPath.equals("")
+                    || !imageTransportPath.equals("") && montantTransport.equals("")
+            ) {
+                Toast.makeText(getApplicationContext(), "Vous devez remplir tous les champs 'transport'", Toast.LENGTH_LONG).show();
+            } else{
+                String[] params = {user.getMail(),
+                        user.getToken(),
+                        user.getId().toString(),
+                        beginDate,
+                        endDate,
+                        kmTransport,
+                        montantTransport,
+                        imageTransportPath,
+                        herbergementNumber,
+                        hebergementPrice,
+                        restaurantNumber,
+                        restaurantPrice,
+                        libelleOther,
+                        priceOther,
+                        imageAutrePath
+                };
+                new AddCostSheet().execute(params);
+            }
         }else{
             Toast.makeText(getApplicationContext(), "Vous devez entrez des dates", Toast.LENGTH_LONG).show();
         }

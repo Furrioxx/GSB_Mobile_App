@@ -16,7 +16,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public class NetworkUtils {
@@ -255,11 +257,29 @@ public class NetworkUtils {
         return responseJSONString;
     }
 
-    public static String addCostSheet(String mail, String token, String imageTransportPath, String imageAutrePath) {
-        Log.d(TAG, imageTransportPath);
+    public static String addCostSheet(
+            String mail,
+            String token,
+            String idUser,
+            String beginDate,
+            String endDate,
+            String kmTransport,
+            String montantTransport,
+            String imageTransportPath,
+            String herbergementNumber,
+            String herbergementPrice,
+            String restaurantNumber,
+            String restaurantPrice,
+            String libelleOther,
+            String priceOther,
+            String imageAutrePath
+    ) {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String responseJSONString = null;
+        String endDateFormatedString = null;
+        String beginDateFormatedString = null;
+        String transportType = null;
 
         try {
             Uri builtURI = Uri.parse(BASE_URL).buildUpon()
@@ -276,13 +296,61 @@ public class NetworkUtils {
             // Create the multipart request
             OutputStream outputStream = urlConnection.getOutputStream();
 
+            //transform to valid date format
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                // Parse input date string
+                Date beginDateFormated = inputDateFormat.parse(beginDate);
+                Date endDateFormated = inputDateFormat.parse(endDate);
+                beginDateFormatedString = outputDateFormat.format(beginDateFormated);
+                endDateFormatedString = outputDateFormat.format(endDateFormated);
+            } catch (ParseException e) {
+                //invalid date format
+                e.printStackTrace();
+                return null;
+            }
+
+            //set transport type
+            if(!kmTransport.equals("")){
+                transportType = "car";
+            }else if(!montantTransport.equals("")){
+                transportType = "train";
+            }else{
+                transportType = "car"; //type par défaut = car
+            }
 
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
-
+            //add datas
             writer.write("--" + boundary + "\r\n");
             writer.write("Content-Disposition: form-data; name=\"mail\"\r\n\r\n" + mail + "\r\n");
             writer.write("--" + boundary + "\r\n");
             writer.write("Content-Disposition: form-data; name=\"token\"\r\n\r\n" + token + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"idUser\"\r\n\r\n" + idUser + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"beginDate\"\r\n\r\n" + beginDateFormatedString + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"endDate\"\r\n\r\n" + endDateFormatedString + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"transport\"\r\n\r\n" + transportType + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"kmTransport\"\r\n\r\n" + kmTransport + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"transportMontant\"\r\n\r\n" + montantTransport + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"TimeLogement\"\r\n\r\n" + herbergementNumber + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"priceLogement\"\r\n\r\n" + herbergementPrice + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"restaurantTime\"\r\n\r\n" + restaurantNumber + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"restaurantPrice\"\r\n\r\n" + restaurantPrice + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"libelleOther\"\r\n\r\n" + libelleOther + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"montantOther\"\r\n\r\n" + priceOther + "\r\n");
+
 
             // Add files
             addFilePart(outputStream, boundary, "transportFile", imageTransportPath);
