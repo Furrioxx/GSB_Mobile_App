@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 
@@ -102,7 +103,7 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
         newRow.setLayoutParams(layoutParams);
         newRow.setGravity(Gravity.CENTER);
         if(isPair){
-            newRow.setBackgroundColor(Color.argb(100,210,210,210));
+            newRow.setBackgroundColor(ContextCompat.getColor(context, R.color.gsb_blue_lighter));
         }
 
         //ajout des colonnes a chaque ligne

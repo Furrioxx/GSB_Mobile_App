@@ -5,4 +5,5 @@
     <color name="error">#f70000</color>
     <color name="gsb_blue">#638ec3</color>
     <color name="gsb_blue_light">#ACC0D6</color>
+    <color name="gsb_blue_lighter">#D6DEE6</color>
 </resources>
