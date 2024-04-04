@@ -9,35 +9,35 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.furrioxx.connexiongsb.R;
+import com.furrioxx.connexiongsb.async.ChangePassword;
 import com.furrioxx.connexiongsb.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity {
 
     private User user;
-    private TextView titleProfileTv;
-    private Button disconnectBtn, changePasswordBtn;
-
-    private Context context = this;
-
     private BottomNavigationView bottomNavigationView;
+    private EditText currentPasswordInput, newPasswordInput, reNewPasswordInput;
+    private Button changePasswordButton;
+    private Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-
-        titleProfileTv = findViewById(R.id.titleProfileTv);
-        disconnectBtn = findViewById(R.id.disconectBtn);
-        changePasswordBtn = findViewById(R.id.changePasswordBtn);
+        setContentView(R.layout.activity_change_password);
 
         Intent intent = getIntent();
         if (intent != null){
             //récupération de l'utilisateur
             user = intent.getParcelableExtra("user");
             if (user != null){
+                changePasswordButton = findViewById(R.id.changePasswordButton);
+                currentPasswordInput = findViewById(R.id.currentPassword);
+                newPasswordInput = findViewById(R.id.newPassword);
+                reNewPasswordInput = findViewById(R.id.reNewPassword);
                 initialize();
             }
         }
@@ -45,27 +45,27 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void initialize(){
         this.setNavigation();
-
-        titleProfileTv.append(" "  + user.getName() + " " + user.getSurname());
-
-        disconnectBtn.setOnClickListener(new View.OnClickListener() {
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent deconnectIntent = new Intent(context, MainActivity.class);
-                //ferme toute les activités dans la pile et empeche donc le retour apres déconnexion
-                deconnectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(deconnectIntent);
+                String currentPassword = currentPasswordInput.getText().toString();
+                String newPassword = newPasswordInput.getText().toString();
+                String reNewPassword = reNewPasswordInput.getText().toString();
+
+                if(!currentPassword.equals("") && !newPassword.equals("") && !reNewPassword.equals("")){
+                    if(newPassword.equals(reNewPassword)){
+                        //les nouveaux mots de passe sont identiques
+                        String[] params = {user.getMail(), user.getId().toString(), user.getToken(), currentPassword, newPassword, reNewPassword};
+                        new ChangePassword(user, context).execute(params);
+                    }else{
+                        Toast.makeText(context, "Les nouveaux mots de passe ne sont pas identique", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(context, "Les champs ne sont pas tous remplis", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
-        changePasswordBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent changePasswordIntent = new Intent(context, ChangePasswordActivity.class);
-                changePasswordIntent.putExtra("user", user);
-                startActivity(changePasswordIntent);
-            }
-        });
     }
 
     private void setNavigation(){

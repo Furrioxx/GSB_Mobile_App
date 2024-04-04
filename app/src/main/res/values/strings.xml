@@ -42,6 +42,12 @@
     <string name="disconect_btn">Se déconnecter</string>
     <string name="change_password_btn">Changer de mot de passe</string>
 
+    <!-- change password page -->
+    <string name="title_change_password">Changement de mot de passe</string>
+    <string name="current_password_hint">Mot de passe actuel</string>
+    <string name="new_password_hint">Nouveau mot de passe</string>
+    <string name="confirm_new_password_hint">Confirmer le nouveau mot de passe</string>
+
     <!--add cost page-->
     <string name="title_add_cost_sheet">Ajouter une fiche de frais</string>
 

@@ -416,4 +416,65 @@ public class NetworkUtils {
             }
         }
     }
+
+    public static String changePassword(String mail, String idUser, String token ,String currentPassword, String newPassword, String reNewPassword){
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        String responseJSONString = null;
+
+        try{
+            Uri builtURI = Uri.parse(BASE_URL).buildUpon()
+                    .appendPath("changePassword")
+                    .build();
+            URL requestURL = new URL(builtURI.toString());
+
+            urlConnection = (HttpURLConnection) requestURL.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+
+            // Create the POST data
+            String postData = "mail=" + Uri.encode(mail) +
+                    "&idUser=" + Uri.encode(idUser) +
+                    "&token=" + Uri.encode(token) +
+                    "&currentPassword=" + Uri.encode(currentPassword) +
+                    "&newPassword=" + Uri.encode(newPassword) +
+                    "&reNewPassword=" + Uri.encode(reNewPassword);
+
+            // Write the data to the connection
+            try (OutputStream os = urlConnection.getOutputStream()) {
+                byte[] input = postData.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            InputStream inputStream = urlConnection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder builder = new StringBuilder();
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append("\n");
+            }
+            if (builder.length() == 0) {
+                return null;
+            }
+            responseJSONString = builder.toString();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return responseJSONString;
+    }
 }
