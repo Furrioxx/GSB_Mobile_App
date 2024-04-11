@@ -18,9 +18,12 @@
         android:theme="@style/Theme.ConnexionGSB"
         tools:targetApi="31">
         <activity
+            android:name=".activities.UpdateCostActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ChangePasswordActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"  />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />

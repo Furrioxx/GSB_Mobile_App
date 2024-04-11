@@ -127,16 +127,19 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
             i++;
         }
         ImageView deleteButton = new ImageView(context);
-        deleteButton.setImageResource(R.drawable.delete);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment dialog = new DeleteCostSheetDialog(user, datas[datas.length -1], context);
-                dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "game");
-            }
-        });
-        newRow.addView(deleteButton);
 
+        //ajout du bouton supprimé si la fiche n'est pas encore traité
+        if(datas[2].equals("NT")){
+            deleteButton.setImageResource(R.drawable.delete);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogFragment dialog = new DeleteCostSheetDialog(user, datas[datas.length -1], context);
+                    dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "game");
+                }
+            });
+            newRow.addView(deleteButton);
+        }
 
         newRow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,14 +150,18 @@ public class GetCostSheet extends AsyncTask<String, Void, String> {
                 context.startActivity(intent);
             }
         });
-        newRow.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                DialogFragment dialog = new DeleteCostSheetDialog(user, datas[datas.length -1], context);
-                dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "game");
-                return false;
-            }
-        });
+
+        //possibilité de supprimer avec un clik prolongé seulement si la fiche est non traité
+        if(datas[2].equals("NT")) {
+            newRow.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    DialogFragment dialog = new DeleteCostSheetDialog(user, datas[datas.length - 1], context);
+                    dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "game");
+                    return false;
+                }
+            });
+        }
 
         //ajout de la ligne au linear layout de l'activity
         linearLayoutCostSheet.get().addView(newRow);

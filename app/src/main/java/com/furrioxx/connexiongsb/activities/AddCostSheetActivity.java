@@ -283,7 +283,7 @@ public class AddCostSheetActivity extends AppCompatActivity {
                         priceOther,
                         imageAutrePath
                 };
-                new AddCostSheet().execute(params);
+                new AddCostSheet(user, this).execute(params);
             }
         }else{
             Toast.makeText(getApplicationContext(), "Vous devez entrez des dates", Toast.LENGTH_LONG).show();

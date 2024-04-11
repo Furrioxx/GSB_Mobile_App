@@ -87,4 +87,19 @@
     <string name="title_autre_file_btn">Selectionner</string>
 
     <string name="button_new_cost_sheet">Créer la fiche de frais</string>
+
+    <!--update cost page-->
+    <string name="title_update_cost">Modifier le frais</string>
+
+    <string name="title_update_libelle">Entrez le libelle du frais :</string>
+    <string name="title_update_libelle_hint">Libelle</string>
+
+    <string name="title_update_montant">Entrez le montant du frais :</string>
+    <string name="title_update_montant_hint">Montant</string>
+
+    <string name="title_update_timing">Entrez la durée ou la distance du frais :</string>
+    <string name="title_update_timing_hint">durée/distance</string>
+
+    <string name="title_update_change_justif">Modifier le justificatif</string>
+    <string name="title_update_button">Modifier le frais</string>
 </resources>

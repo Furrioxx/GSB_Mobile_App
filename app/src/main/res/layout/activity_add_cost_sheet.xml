@@ -161,8 +161,8 @@
 
             <ImageView
                 android:id="@+id/transportFileImageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
                 tools:visibility="gone" />
 
             <View
@@ -329,8 +329,8 @@
 
             <ImageView
                 android:id="@+id/otherFileImageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
                 tools:visibility="gone" />
 
             <View

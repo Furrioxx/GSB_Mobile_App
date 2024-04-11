@@ -19,6 +19,8 @@ import androidx.fragment.app.DialogFragment;
 import com.furrioxx.connexiongsb.R;
 import com.furrioxx.connexiongsb.activities.CostDetailActivity;
 import com.furrioxx.connexiongsb.activities.DashboardVisitorActivity;
+import com.furrioxx.connexiongsb.activities.UpdateCostActivity;
+import com.furrioxx.connexiongsb.entity.User;
 import com.furrioxx.connexiongsb.utils.DeleteCostSheetDialog;
 import com.furrioxx.connexiongsb.utils.NetworkUtils;
 
@@ -30,15 +32,21 @@ import java.lang.ref.WeakReference;
 public class GetCost extends AsyncTask<String, Void, String> {
     private static final String TAG = "GetCost";
     private Context context;
+    public static final String ID_FRAIS = "com.furrioxx.connexiongsb.extra.ID_FRAIS";
+    public static final String ID_FICHE_FRAIS = "com.furrioxx.connexiongsb.extra.ID_FICHE_FRAIS";
+
+
+    private User user;
     private WeakReference<LinearLayout> linearLayoutCost;
     private WeakReference<TextView> totalCostTv, refundCostTv, stateCostSheetTv;
 
-    public GetCost(Context activityContext, LinearLayout layout, TextView totalCost, TextView refundCost, TextView stateCost){
+    public GetCost(Context activityContext, LinearLayout layout, TextView totalCost, TextView refundCost, TextView stateCost, User userConnected){
         this.context = activityContext;
         linearLayoutCost = new WeakReference<>(layout);
         totalCostTv = new WeakReference<>(totalCost);
         refundCostTv = new WeakReference<>(refundCost);
         stateCostSheetTv = new WeakReference<>(stateCost);
+        this.user = userConnected;
     }
 
     @Override
@@ -60,6 +68,8 @@ public class GetCost extends AsyncTask<String, Void, String> {
             String montant_total = null;
             String refund_total = null;
             String linkJustif = null;
+            String statue = null;
+            String idFicheFrais = null;
 
             while (i < itemsArray.length()) {
                 JSONObject cost = itemsArray.getJSONObject(i);
@@ -79,7 +89,9 @@ public class GetCost extends AsyncTask<String, Void, String> {
                     montant_total = cost.getString("montant_total");
                     refund_total = cost.getString("refund_total");
                     linkJustif = cost.getString("linkJustif");
-                    String[] datas = {libelle, montant, refund_montant, idCost};
+                    statue = cost.getString("statue");
+                    idFicheFrais = cost.getString("idFicheFrais");
+                    String[] datas = {libelle, montant, refund_montant, idCost, statue, idFicheFrais};
                     if( idCost != null){
 
                         // i % 2 pour avoir un tableau stripped
@@ -124,7 +136,7 @@ public class GetCost extends AsyncTask<String, Void, String> {
         //ajout des colonnes a chaque ligne
         int i = 0;
         // data.length -1 car on ne veut pas afficher l'id du frais
-        while(i < datas.length -1){
+        while(i < datas.length - 3){
             TextView newColumn = new TextView(context);
             newColumn.setText(datas[i]);
             // Création des paramètres avec un poids
@@ -139,6 +151,20 @@ public class GetCost extends AsyncTask<String, Void, String> {
             newColumn.setLayoutParams(columnLayoutParams);
             newRow.addView(newColumn);
             i++;
+        }
+
+        //si la fiche de frais est non traité alors on peut modifier les frais
+        if(datas[4].equals("NT")){
+            newRow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, UpdateCostActivity.class);
+                    intent.putExtra(ID_FRAIS, datas[datas.length -3]); //data.length - 3 correspond a idFrais
+                    intent.putExtra("user", user);
+                    intent.putExtra(ID_FICHE_FRAIS, datas[datas.length-1]); //date.length - 1 correspond à idFicheFrais
+                    context.startActivity(intent);
+                }
+            });
         }
 
         //ajout de la ligne au linear layout de l'activity

@@ -477,4 +477,155 @@ public class NetworkUtils {
 
         return responseJSONString;
     }
+
+    public static String getPreciseCost(String mail, String token, String idCost){
+        Log.d(TAG, "Data envoyé : " + mail + " " +  token + " " +   idCost);
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        String responseJSONString = null;
+
+        try{
+            Uri builtURI = Uri.parse(BASE_URL).buildUpon()
+                    .appendPath("getPreciseCost")
+                    .build();
+            URL requestURL = new URL(builtURI.toString());
+
+            urlConnection = (HttpURLConnection) requestURL.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+
+            // Create the POST data
+            String postData = "mail=" + Uri.encode(mail)
+                    + "&token=" + Uri.encode(token)
+                    + "&idFrais=" + Uri.encode(idCost);
+
+            // Write the data to the connection
+            try (OutputStream os = urlConnection.getOutputStream()) {
+                byte[] input = postData.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            InputStream inputStream = urlConnection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder builder = new StringBuilder();
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append("\n");
+            }
+            if (builder.length() == 0) {
+                return null;
+            }
+            responseJSONString = builder.toString();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return responseJSONString;
+    }
+
+    public static String updateCost(
+            String mail,
+            String token,
+            String idUser,
+            String newLibelle,
+            String newMontant,
+            String newTiming,
+            String idFrais,
+            String idFicheFrais,
+            String newJustifPath
+    ){
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        String responseJSONString = null;
+        String endDateFormatedString = null;
+        String beginDateFormatedString = null;
+        String transportType = null;
+
+        try {
+            Uri builtURI = Uri.parse(BASE_URL).buildUpon()
+                    .appendPath("updateCost")
+                    .build();
+            URL requestURL = new URL(builtURI.toString());
+
+            urlConnection = (HttpURLConnection) requestURL.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            String boundary = UUID.randomUUID().toString();
+            urlConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+
+            // Create the multipart request
+            OutputStream outputStream = urlConnection.getOutputStream();
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
+            //add datas
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"mail\"\r\n\r\n" + mail + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"token\"\r\n\r\n" + token + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"idUser\"\r\n\r\n" + idUser + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"newLibelle\"\r\n\r\n" + newLibelle + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"newMontant\"\r\n\r\n" + newMontant + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"idFrais\"\r\n\r\n" + idFrais + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"idFicheFrais\"\r\n\r\n" + idFicheFrais + "\r\n");
+            writer.write("--" + boundary + "\r\n");
+            writer.write("Content-Disposition: form-data; name=\"newTiming\"\r\n\r\n" + newTiming + "\r\n");
+
+
+            // Add files
+            addFilePart(outputStream, boundary, "newJustif", newJustifPath);
+
+            writer.write("--" + boundary + "--\r\n");
+            writer.flush();
+            writer.close();
+
+            InputStream inputStream = urlConnection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder builder = new StringBuilder();
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append("\n");
+            }
+            if (builder.length() == 0) {
+                return null;
+            }
+            responseJSONString = builder.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return responseJSONString;
+    }
 }

@@ -49,7 +49,7 @@ public class CostDetailActivity extends AppCompatActivity {
         this.setNavigation();
 
         String[] param = {user.getMail() , user.getToken(), idFicheFrais};
-        new GetCost(this, linearLayoutCostDetail ,titleTotalCostTv, titleRefundCostTv, titleStateCostSheetTv).execute(param);
+        new GetCost(this, linearLayoutCostDetail ,titleTotalCostTv, titleRefundCostTv, titleStateCostSheetTv, user).execute(param);
     }
 
     private void setNavigation(){
